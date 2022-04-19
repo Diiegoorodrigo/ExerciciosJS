@@ -23,6 +23,8 @@ for (let i of ps ) {
     i.style.marginBottom = '10px';
     i.style.color = 'white'
     i.style.padding = '10px'
+    
 }
 
 // acima definimos que o background de cada p recebe o background do Body, também adicionamos ao style de cada p uma margem para observarmos o resultado em cada p e mudamos a cor da fonte e inserimos um padding para uma estetica melhor.
+
