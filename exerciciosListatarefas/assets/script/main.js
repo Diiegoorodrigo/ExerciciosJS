@@ -66,6 +66,8 @@ function addSaveTarefas () {
     const listaTarefas = JSON.parse(tarefas)
 
     // O JSON que virou uma string retorna ao seu estado de array, assim nos permitindo manipula-lo mais uma vez, para que seja retornado na interface do navegador
+
+    
     if(listaTarefas === null) {
         alert('bem vindo')
         } else {
