@@ -62,19 +62,20 @@ function saveTarefa () {
 }
 
 function addSaveTarefas () {
-
-    
     const tarefas = localStorage.getItem('tarefas')
     const listaTarefas = JSON.parse(tarefas)
-    if (listaTarefas===null){
-        listaTarefas=[];
-    }
+
     // O JSON que virou uma string retorna ao seu estado de array, assim nos permitindo manipula-lo mais uma vez, para que seja retornado na interface do navegador
-    
-    for (let tarefa of listaTarefas) {
-        creatTarefa(tarefa)
+    if(listaTarefas === null) {
+        alert('bem vindo')
+        } else {
+            for (let tarefa of listaTarefas) {
+                creatTarefa(tarefa)
+            }
+        }
     }
-}
+    
+
 
 addSaveTarefas();
 
