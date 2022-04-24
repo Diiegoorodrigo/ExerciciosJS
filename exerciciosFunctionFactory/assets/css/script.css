@@ -1,0 +1,189 @@
+@charset "utf-8";
+
+:root
+{
+    --color-one: #20204d;
+    --white-color: white;
+
+}
+
+*
+{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body
+{
+    background-color: var(--color-one);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+label
+{
+    display: block;
+    padding: 20px 0px 10px 0px;
+}
+
+.container 
+{
+    max-width: 600px;
+    margin: auto;
+    background-color: var(--white-color);
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    margin-top: 30px;
+    border-radius: 20px;
+  
+    
+    
+}
+
+.container h1 
+{
+    margin-bottom: 20px;
+}
+
+
+.form-area
+{
+    width: 100%;
+}
+
+.form-content
+{
+    width: 100%;
+}
+
+.form input
+{
+    width: 100%;
+    padding: 10px;
+    outline: none;
+    border-radius: 5px;
+    
+}
+
+.form input:focus
+{
+    box-shadow: 0 0 10px 2px var(--color-one);
+    border: 1px solid var(--color-one);
+}
+
+.but
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 20px;
+    
+}
+
+.but button
+{
+    width: 200px;
+    height: 40px;
+    background-color: var(--color-one);
+    color: var(--white-color);
+    font-size: 16px;
+    font-weight: bolder;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 400ms ease-in-out;
+    
+}
+
+.but button:hover
+{
+    background-color: white;
+    color: var(--color-one);
+    box-shadow:  0 0 10px var(--color-one);
+    border: 1px solid var(--color-one);
+}
+
+.text-content
+{
+    
+    width: 100%;
+    display:flex;
+    flex-flow: row;
+    justify-content: space-evenly;
+    
+}
+
+
+.text-content h2
+{
+    margin-bottom: 20px;
+}
+
+
+.text-content p 
+{
+    margin-bottom: 10px;
+}
+
+.result 
+{
+    margin-top: 30px;
+    border-radius: 5px;
+}
+
+.result p
+{
+    padding: 10px;
+}
+
+.good 
+{
+    background-color: rgb(63, 235, 20);
+}
+
+.bad
+{
+    background-color: rgb(224, 95, 95);
+}
+
+table 
+{
+    width: 350px;
+   
+}
+
+table button {
+    width: 100%;
+    cursor: pointer;
+    padding: 5px 10px 5px 10px;
+    font-weight: bold;
+}
+
+
+input 
+{
+    padding: 7px;
+    width: 100%;
+    text-align: right;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+button  
+{
+    background-color: #cacaca;
+    font-size: 1rem;
+    border: none;
+}
+
+button:hover
+{
+    background-color: #616161;
+}
+
+.btn-result:hover 
+{
+    background-color: rgb(153, 153, 224);
+}
