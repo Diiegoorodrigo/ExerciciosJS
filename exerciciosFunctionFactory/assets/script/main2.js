@@ -1,3 +1,5 @@
+// criando uma calculadora com função construtora.
+
 function Calculadora () {
 
     this.display = document.querySelector('.display');
