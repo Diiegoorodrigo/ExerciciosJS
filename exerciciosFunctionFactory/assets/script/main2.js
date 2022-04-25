@@ -38,15 +38,13 @@ function Calculadora () {
 
     this.btnForDisplay = el => {
         this.display.value += el.innerText;
-    };
-
-    this.apagaUm = () => {
-    this.display.value = this.display.value.slice(0,-1);
-    }   
-
-    this.clearDisplay = () => {
-        this.display.value = '';
+        this.display.focus();
     }
+
+    
+    this.apagaUm = () => this.display.value = this.display.value.slice(0,-1);
+    this.clearDisplay = () =>  this.display.value = '';
+    
 
     this.clickButton = () => {
         document.addEventListener('click', e =>{
