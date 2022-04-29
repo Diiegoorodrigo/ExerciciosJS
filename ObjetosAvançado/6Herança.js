@@ -80,3 +80,8 @@ console.log(canequita)
 
 livroUm.venda(20)
 console.log(livroUm.estoque)
+
+let cpf = '428.741.708.95'
+let cpfLimpo = cpf.replace(/\D+/g, '')
+let cpfArray = Array.from(cpfLimpo)
+
