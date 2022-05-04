@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="assets/css/script.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Formulário de cadastro</h1>
+        <ul>
+            <li>Nenhum campo pode estar vazio'</li>
+            <li>Usuário só poderá conter letras e/ou números</li>
+            <li>Usuário deverá ter entre 3 e 12 caracteres</li>
+            <li>Senha precisa ter entre 6 e 12 caracteres</li>
+        </ul>
+        <form action="/" method="post" class="dform">
+            <label for="name">Nome:</label>
+            <input type="text" name="name" class="name valid">
+            <label for="lasName">sobrenome:</label>
+            <input type="text" name="lasName" class="lasName valid">
+            <label for="cpf">CPF:</label>
+            <input type="text" name="cpf"password class="cpf valid">
+            <label for="userName">Usuário:</label>
+            <input type="text" name="userName" class="userName valid">
+            <label for="password">Senha:</label>
+            <input type="password" name="password" class="password valid">
+            <label for="repeatPassword">Repetir senha:</label>
+            <input type="password" name="repeatPassword" class="repeatPassword valid">
+            <button type="submit">Enviar</button>
+
+        </form>
+    </div>
+    <script src="./assets/script/main.js"></script>
+    <script src="./assets/script/ValidaCPF.js"></script>
+</body>
+</html>
