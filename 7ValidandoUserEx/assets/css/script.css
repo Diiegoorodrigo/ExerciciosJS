@@ -87,3 +87,8 @@ label
     color: red;
     margin-top: 5px;
 }
+
+.after-form
+{
+display: none;
+}

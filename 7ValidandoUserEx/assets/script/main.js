@@ -8,6 +8,8 @@
 class ValidForm {
     constructor() {
         this.form = document.querySelector('.dform')
+        this.afterForm = document.querySelector('.after-form')
+        this.formContent = document.querySelector('.form-section')
 
         this.events()
 
@@ -30,7 +32,8 @@ class ValidForm {
 
        if(checkFields && validPassword) {
            alert('Formulario enviado')
-           this.form.submit()
+           this.formContent.style.display = 'none'
+           this.afterForm.style.display = 'block'
        }
     }
 
