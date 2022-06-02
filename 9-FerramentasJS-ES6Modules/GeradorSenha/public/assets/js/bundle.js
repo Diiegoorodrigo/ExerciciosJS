@@ -2,264 +2,85 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/Modulos/ValidaCPF.js":
+/***/ "./src/modules/form.js":
+/*!*****************************!*\
+  !*** ./src/modules/form.js ***!
+  \*****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _gerasenha__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./gerasenha */ "./src/modules/gerasenha.js");
+
+var creatP = document.querySelector('.geraSenha');
+var qtdN = document.querySelector('.qtd');
+var msc = document.querySelector('.ms');
+var minL = document.querySelector('.mn');
+var numL = document.querySelector('.nb');
+var symN = document.querySelector('.sb');
+var geraA = document.querySelector('.geraA');
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (function () {
+  geraA.addEventListener('click', function () {
+    creatP.innerHTML = gera();
+  });
+});
+
+function gera() {
+  var senha = (0,_gerasenha__WEBPACK_IMPORTED_MODULE_0__["default"])(qtdN.value, msc.checked, minL.checked, numL.checked, symN.checked);
+  if (!senha) return 'Senha deve conter no maximo 20 caracteres';
+  return senha || 'Nada Selecionado';
+}
+
+/***/ }),
+
+/***/ "./src/modules/gerasenha.js":
 /*!**********************************!*\
-  !*** ./src/Modulos/ValidaCPF.js ***!
+  !*** ./src/modules/gerasenha.js ***!
   \**********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "ValidaCPF": () => (/* binding */ ValidaCPF)
+/* harmony export */   "default": () => (/* binding */ geraPass)
 /* harmony export */ });
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var rand = function rand(min, max) {
+  return Math.floor(Math.random() * (max - min) + min);
+};
 
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+var geraMais = function geraMais() {
+  return String.fromCharCode(rand(65, 91));
+};
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+var geraMin = function geraMin() {
+  return String.fromCharCode(rand(97, 123));
+};
 
-// 705.484.450-52 070.987.720-03
+var geraNum = function geraNum() {
+  return String.fromCharCode(rand(48, 58));
+};
 
-/*
-7x  0x 5x 4x 8x 4x 4x 5x 0x
-10  9  8  7  6  5  4  3  2
-70  0  40 28 48 20 16 15 0 = 237
-11 - (237 % 11) = 5 (Primeiro dígito)
-Se o número digito for maior que 9, consideramos 0.
-7x  0x 5x 4x 8x 4x 4x 5x 0x 5x
-11 10  9  8  7  6  5  4  3  2
-77  0  45 32 56 24 20 20 0  10 = 284
-11 - (284 % 11) = 2 (Primeiro dígito)
-Se o número digito for maior que 9, consideramos 0.
-*/
-var ValidaCPF = /*#__PURE__*/function () {
-  function ValidaCPF(cpfEnviado) {
-    _classCallCheck(this, ValidaCPF);
+var sym = '^~()*&%$#@!.,;';
 
-    Object.defineProperty(this, 'cpfLimpo', {
-      writable: false,
-      configurable: false,
-      enumerable: true,
-      value: cpfEnviado.replace(/\D+/g, '')
-    });
+var geraSym = function geraSym() {
+  return sym[rand(0, sym.length)];
+};
+
+function geraPass(qtd, maisc, minus, num, symb) {
+  var senhaArray = [];
+  qtd = Number(qtd);
+  if (qtd > 20) return;
+
+  for (var i = 0; i < qtd; i++) {
+    maisc && senhaArray.push(geraMais());
+    minus && senhaArray.push(geraMin());
+    num && senhaArray.push(geraNum());
+    symb && senhaArray.push(geraSym());
   }
 
-  _createClass(ValidaCPF, [{
-    key: "valida",
-    value: function valida() {
-      if (this.cpfLimpo === 'undefined') return false;
-      if (this.cpfLimpo.length !== 11) return false;
-      if (this.isSequencia()) return false;
-      var cpfParcial = this.cpfLimpo.slice(0, -2);
-      var digito1 = ValidaCPF.criaDigito(cpfParcial);
-      var digito2 = ValidaCPF.criaDigito(cpfParcial + digito1);
-      var novoCpf = cpfParcial + digito1 + digito2;
-      return novoCpf === this.cpfLimpo;
-    }
-  }, {
-    key: "isSequencia",
-    value: function isSequencia() {
-      return this.cpfLimpo.charAt(0).repeat === this.cpfLimpo;
-    }
-  }], [{
-    key: "criaDigito",
-    value: function criaDigito(cpfParcial) {
-      // como a função não utilizou nenhum valor dentro da instância foi possível deixar ela como uma função estática.
-      var cpfArray = Array.from(cpfParcial);
-      var regressivo = cpfArray.length + 1;
-      var total = cpfArray.reduce(function (ac, val) {
-        ac += regressivo * Number(val);
-        regressivo--;
-        return ac;
-      }, 0);
-      var digito = 11 - total % 11;
-      return digito > 9 ? '0' : String(digito);
-    }
-  }]);
-
-  return ValidaCPF;
-}();
-
-/***/ }),
-
-/***/ "./src/Modulos/form.js":
-/*!*****************************!*\
-  !*** ./src/Modulos/form.js ***!
-  \*****************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _ValidaCPF__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ValidaCPF */ "./src/Modulos/ValidaCPF.js");
-function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-
-// 1 - selecionar formulário
-// 2 -  criar uma lista de eventos
-// 3 -  criar evento para segurar o envio do formulário
-// 4 - criar metodo para validar os campos do formulário
-var ValidForm = /*#__PURE__*/function () {
-  function ValidForm() {
-    _classCallCheck(this, ValidForm);
-
-    this.form = document.querySelector('.dform');
-    this.afterForm = document.querySelector('.after-form');
-    this.formContent = document.querySelector('.form-section');
-    this.events();
-  }
-
-  _createClass(ValidForm, [{
-    key: "events",
-    value: function events() {
-      var _this = this;
-
-      this.form.addEventListener('submit', function (e) {
-        _this.handleSubmit(e);
-      });
-    }
-  }, {
-    key: "handleSubmit",
-    value: function handleSubmit(e) {
-      // metodo que irá controlar o envio do formulário
-      e.preventDefault();
-      var checkFields = this.checkFields();
-      var validPassword = this.validPassword();
-
-      if (checkFields && validPassword) {
-        alert('Formulario enviado');
-        this.formContent.style.display = 'none';
-        this.afterForm.style.display = 'block';
-      }
-    }
-  }, {
-    key: "validPassword",
-    value: function validPassword() {
-      // metodo para verificar o tamanho da senha e se elas estão iguais
-      var valid = true;
-      var password = this.form.querySelector('.password');
-      var repeatPassword = this.form.querySelector('.repeatPassword');
-
-      if (password.value !== repeatPassword.value) {
-        valid = false;
-        this.creatError(password, 'As senhas precisam ser iguais');
-        this.creatError(repeatPassword, 'As senhas precisam ser iguais');
-      }
-
-      if (password.value.length < 6 || password.value.length > 12) {
-        valid = false;
-        this.creatError(password, 'Senha precisa ter entre 6 a 12 caracteres ');
-      }
-
-      return valid;
-    }
-  }, {
-    key: "checkFields",
-    value: function checkFields() {
-      // função para checar os campos
-      var valid = true;
-
-      var _iterator = _createForOfIteratorHelper(this.form.querySelectorAll('.error-text')),
-          _step;
-
-      try {
-        for (_iterator.s(); !(_step = _iterator.n()).done;) {
-          var errorText = _step.value;
-          errorText.remove();
-        } // for para retirar as mensagens de error quando inseridas.
-
-      } catch (err) {
-        _iterator.e(err);
-      } finally {
-        _iterator.f();
-      }
-
-      var _iterator2 = _createForOfIteratorHelper(this.form.querySelectorAll('.valid')),
-          _step2;
-
-      try {
-        for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-          var field = _step2.value;
-          // for para passar por cada input
-          var label = field.previousElementSibling.innerText;
-
-          if (!field.value) {
-            this.creatError(field, "Campo ".concat(label, " n\xE3o pode ficar em branco"));
-            valid = false; // condição para verificar se o input não está vazio
-          }
-
-          if (field.classList.contains('cpf')) {
-            if (!this.validaCPF(field)) valid = false; // condição para verificar o cpf  
-          }
-
-          if (field.classList.contains('userName')) {
-            if (!this.validUser(field)) valid = false; // condição para verificar o nome de usuário
-          }
-        }
-      } catch (err) {
-        _iterator2.e(err);
-      } finally {
-        _iterator2.f();
-      }
-
-      return valid;
-    }
-  }, {
-    key: "validUser",
-    value: function validUser(field) {
-      // metodo para verificar o tamanho do nome do usuário
-      var user = field.value;
-      var valid = true;
-
-      if (user.length > 12 || user.length < 3) {
-        this.creatError(field, 'Usuario precisa ter entre 3 e 12 caracteres ');
-        valid = false;
-      }
-
-      if (!user.match(/^[a-zA-Z0-9]+$/g)) {
-        // condição e metodo para verificar se o nome do usuário contem apenas letras e númeors
-        this.creatError(field, 'nome do usuário precisa conter apenas letras ou númemoros ');
-        valid = false;
-      }
-
-      return valid;
-    }
-  }, {
-    key: "validaCPF",
-    value: function validaCPF(field) {
-      // metodo para validar cpf, usando outro script de valida CPF
-      var cpf = new _ValidaCPF__WEBPACK_IMPORTED_MODULE_0__.ValidaCPF(field.value);
-
-      if (!cpf.valida()) {
-        this.creatError(field, 'CPF invalido');
-        return false;
-      }
-
-      return true;
-    }
-  }, {
-    key: "creatError",
-    value: function creatError(field, msg) {
-      // metodo para criar uma msg de erro
-      var div = document.createElement('div');
-      div.innerHTML = msg;
-      div.classList.add('error-text');
-      field.insertAdjacentElement('afterend', div);
-    }
-  }]);
-
-  return ValidForm;
-}();
-
-
-var valid = new ValidForm();
+  return senhaArray.join('').slice(0, qtd);
+}
 
 /***/ }),
 
@@ -282,7 +103,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "@charset \"utf-8\";\r\n\r\n:root\r\n{\r\n    --color-one: #20204d;\r\n    --white-color: white;\r\n\r\n}\r\n\r\n*\r\n{\r\n    margin: 0;\r\n    padding: 0;\r\n    box-sizing: border-box;\r\n}\r\n\r\nbody\r\n{\r\n    background-color: var(--color-one);\r\n    font-family: Arial, Helvetica, sans-serif;\r\n}\r\n\r\nlabel\r\n{\r\n    display: block;\r\n    padding: 20px 0px 10px 0px;\r\n}\r\n\r\n.container \r\n{\r\n    max-width: 600px;\r\n    margin: auto;\r\n    background-color: var(--white-color);\r\n    display: flex;\r\n    flex-flow: column wrap;\r\n    justify-content: center;\r\n    align-items: center;\r\n    padding: 20px;\r\n    margin-top: 30px;\r\n    border-radius: 20px;\r\n  \r\n    \r\n    \r\n}\r\n\r\n.container h1 \r\n{\r\n    margin-bottom: 20px;\r\n}\r\n\r\n\r\n.form-area\r\n{\r\n    width: 100%;\r\n}\r\n\r\n.form-content\r\n{\r\n    width: 100%;\r\n}\r\n\r\n.dform \r\n{\r\n    width: 100%;\r\n    display: flex;\r\n    flex-direction: column;\r\n}\r\n\r\n.dform input\r\n{\r\n    width: 100%;\r\n    padding: 10px;\r\n    margin-top: 5px;\r\n    margin-bottom: 5px;\r\n}\r\n\r\n.dform button {\r\n    width: 50%;\r\n  padding: 10px;\r\n  align-self: center;\r\n  margin-top: 20px;\r\n}\r\n\r\n.error-text\r\n{\r\n    font-size: 12px;\r\n    color: red;\r\n    margin-top: 5px;\r\n}\r\n\r\n.after-form\r\n{\r\ndisplay: none;\r\n}", "",{"version":3,"sources":["webpack://./src/assets/css/style.css"],"names":[],"mappings":"AAAA,gBAAgB;;AAEhB;;IAEI,oBAAoB;IACpB,oBAAoB;;AAExB;;AAEA;;IAEI,SAAS;IACT,UAAU;IACV,sBAAsB;AAC1B;;AAEA;;IAEI,kCAAkC;IAClC,yCAAyC;AAC7C;;AAEA;;IAEI,cAAc;IACd,0BAA0B;AAC9B;;AAEA;;IAEI,gBAAgB;IAChB,YAAY;IACZ,oCAAoC;IACpC,aAAa;IACb,sBAAsB;IACtB,uBAAuB;IACvB,mBAAmB;IACnB,aAAa;IACb,gBAAgB;IAChB,mBAAmB;;;;AAIvB;;AAEA;;IAEI,mBAAmB;AACvB;;;AAGA;;IAEI,WAAW;AACf;;AAEA;;IAEI,WAAW;AACf;;AAEA;;IAEI,WAAW;IACX,aAAa;IACb,sBAAsB;AAC1B;;AAEA;;IAEI,WAAW;IACX,aAAa;IACb,eAAe;IACf,kBAAkB;AACtB;;AAEA;IACI,UAAU;EACZ,aAAa;EACb,kBAAkB;EAClB,gBAAgB;AAClB;;AAEA;;IAEI,eAAe;IACf,UAAU;IACV,eAAe;AACnB;;AAEA;;AAEA,aAAa;AACb","sourcesContent":["@charset \"utf-8\";\r\n\r\n:root\r\n{\r\n    --color-one: #20204d;\r\n    --white-color: white;\r\n\r\n}\r\n\r\n*\r\n{\r\n    margin: 0;\r\n    padding: 0;\r\n    box-sizing: border-box;\r\n}\r\n\r\nbody\r\n{\r\n    background-color: var(--color-one);\r\n    font-family: Arial, Helvetica, sans-serif;\r\n}\r\n\r\nlabel\r\n{\r\n    display: block;\r\n    padding: 20px 0px 10px 0px;\r\n}\r\n\r\n.container \r\n{\r\n    max-width: 600px;\r\n    margin: auto;\r\n    background-color: var(--white-color);\r\n    display: flex;\r\n    flex-flow: column wrap;\r\n    justify-content: center;\r\n    align-items: center;\r\n    padding: 20px;\r\n    margin-top: 30px;\r\n    border-radius: 20px;\r\n  \r\n    \r\n    \r\n}\r\n\r\n.container h1 \r\n{\r\n    margin-bottom: 20px;\r\n}\r\n\r\n\r\n.form-area\r\n{\r\n    width: 100%;\r\n}\r\n\r\n.form-content\r\n{\r\n    width: 100%;\r\n}\r\n\r\n.dform \r\n{\r\n    width: 100%;\r\n    display: flex;\r\n    flex-direction: column;\r\n}\r\n\r\n.dform input\r\n{\r\n    width: 100%;\r\n    padding: 10px;\r\n    margin-top: 5px;\r\n    margin-bottom: 5px;\r\n}\r\n\r\n.dform button {\r\n    width: 50%;\r\n  padding: 10px;\r\n  align-self: center;\r\n  margin-top: 20px;\r\n}\r\n\r\n.error-text\r\n{\r\n    font-size: 12px;\r\n    color: red;\r\n    margin-top: 5px;\r\n}\r\n\r\n.after-form\r\n{\r\ndisplay: none;\r\n}"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "@charset \"utf-8\";\r\n\r\n:root\r\n{\r\n    --color-one: #20204d;\r\n    --white-color: white;\r\n\r\n}\r\n\r\n*\r\n{\r\n    margin: 0;\r\n    padding: 0;\r\n    box-sizing: border-box;\r\n}\r\n\r\nbody\r\n{\r\n    background-color: var(--color-one);\r\n    font-family: Arial, Helvetica, sans-serif;\r\n}\r\n\r\nlabel\r\n{\r\n    display: block;\r\n    padding: 20px 0px 10px 0px;\r\n}\r\n\r\n.container \r\n{\r\n    max-width: 600px;\r\n    margin: auto;\r\n    background-color: var(--white-color);\r\n    display: flex;\r\n    flex-flow: column wrap;\r\n    justify-content: center;\r\n    align-items: center;\r\n    padding: 20px;\r\n    margin-top: 30px;\r\n    border-radius: 20px;\r\n  \r\n    \r\n    \r\n}\r\n\r\n.container h1 \r\n{\r\n    margin-bottom: 20px;\r\n}\r\n\r\n\r\n.form-area\r\n{\r\n    width: 100%;\r\n}\r\n\r\n.form-content\r\n{\r\n    width: 100%;\r\n}\r\n\r\n.dform \r\n{\r\n    width: 100%;\r\n    display: flex;\r\n    flex-direction: column;\r\n}\r\n\r\n.dform input\r\n{\r\n    width: 100%;\r\n    padding: 10px;\r\n    margin-top: 5px;\r\n    margin-bottom: 5px;\r\n}\r\n\r\n.dform button {\r\n    width: 50%;\r\n  padding: 10px;\r\n  align-self: center;\r\n  margin-top: 20px;\r\n}\r\n\r\n.error-text\r\n{\r\n    font-size: 12px;\r\n    color: red;\r\n    margin-top: 5px;\r\n}\r\n\r\n.after-form\r\n{\r\ndisplay: none;\r\n}\r\n\r\np \r\n{\r\n    margin: 15px;\r\n}\r\n\r\n.geraSenha\r\n{\r\n    font-size: 2rem;\r\n    margin: 40px 0;\r\n    color: green;\r\n}", "",{"version":3,"sources":["webpack://./src/assets/css/style.css"],"names":[],"mappings":"AAAA,gBAAgB;;AAEhB;;IAEI,oBAAoB;IACpB,oBAAoB;;AAExB;;AAEA;;IAEI,SAAS;IACT,UAAU;IACV,sBAAsB;AAC1B;;AAEA;;IAEI,kCAAkC;IAClC,yCAAyC;AAC7C;;AAEA;;IAEI,cAAc;IACd,0BAA0B;AAC9B;;AAEA;;IAEI,gBAAgB;IAChB,YAAY;IACZ,oCAAoC;IACpC,aAAa;IACb,sBAAsB;IACtB,uBAAuB;IACvB,mBAAmB;IACnB,aAAa;IACb,gBAAgB;IAChB,mBAAmB;;;;AAIvB;;AAEA;;IAEI,mBAAmB;AACvB;;;AAGA;;IAEI,WAAW;AACf;;AAEA;;IAEI,WAAW;AACf;;AAEA;;IAEI,WAAW;IACX,aAAa;IACb,sBAAsB;AAC1B;;AAEA;;IAEI,WAAW;IACX,aAAa;IACb,eAAe;IACf,kBAAkB;AACtB;;AAEA;IACI,UAAU;EACZ,aAAa;EACb,kBAAkB;EAClB,gBAAgB;AAClB;;AAEA;;IAEI,eAAe;IACf,UAAU;IACV,eAAe;AACnB;;AAEA;;AAEA,aAAa;AACb;;AAEA;;IAEI,YAAY;AAChB;;AAEA;;IAEI,eAAe;IACf,cAAc;IACd,YAAY;AAChB","sourcesContent":["@charset \"utf-8\";\r\n\r\n:root\r\n{\r\n    --color-one: #20204d;\r\n    --white-color: white;\r\n\r\n}\r\n\r\n*\r\n{\r\n    margin: 0;\r\n    padding: 0;\r\n    box-sizing: border-box;\r\n}\r\n\r\nbody\r\n{\r\n    background-color: var(--color-one);\r\n    font-family: Arial, Helvetica, sans-serif;\r\n}\r\n\r\nlabel\r\n{\r\n    display: block;\r\n    padding: 20px 0px 10px 0px;\r\n}\r\n\r\n.container \r\n{\r\n    max-width: 600px;\r\n    margin: auto;\r\n    background-color: var(--white-color);\r\n    display: flex;\r\n    flex-flow: column wrap;\r\n    justify-content: center;\r\n    align-items: center;\r\n    padding: 20px;\r\n    margin-top: 30px;\r\n    border-radius: 20px;\r\n  \r\n    \r\n    \r\n}\r\n\r\n.container h1 \r\n{\r\n    margin-bottom: 20px;\r\n}\r\n\r\n\r\n.form-area\r\n{\r\n    width: 100%;\r\n}\r\n\r\n.form-content\r\n{\r\n    width: 100%;\r\n}\r\n\r\n.dform \r\n{\r\n    width: 100%;\r\n    display: flex;\r\n    flex-direction: column;\r\n}\r\n\r\n.dform input\r\n{\r\n    width: 100%;\r\n    padding: 10px;\r\n    margin-top: 5px;\r\n    margin-bottom: 5px;\r\n}\r\n\r\n.dform button {\r\n    width: 50%;\r\n  padding: 10px;\r\n  align-self: center;\r\n  margin-top: 20px;\r\n}\r\n\r\n.error-text\r\n{\r\n    font-size: 12px;\r\n    color: red;\r\n    margin-top: 5px;\r\n}\r\n\r\n.after-form\r\n{\r\ndisplay: none;\r\n}\r\n\r\np \r\n{\r\n    margin: 15px;\r\n}\r\n\r\n.geraSenha\r\n{\r\n    font-size: 2rem;\r\n    margin: 40px 0;\r\n    color: green;\r\n}"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -871,10 +692,11 @@ var __webpack_exports__ = {};
   !*** ./src/main.js ***!
   \*********************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Modulos_form_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Modulos/form.js */ "./src/Modulos/form.js");
+/* harmony import */ var _modules_form__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/form */ "./src/modules/form.js");
 /* harmony import */ var _assets_css_style_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./assets/css/style.css */ "./src/assets/css/style.css");
 
 
+(0,_modules_form__WEBPACK_IMPORTED_MODULE_0__["default"])();
 })();
 
 /******/ })()
